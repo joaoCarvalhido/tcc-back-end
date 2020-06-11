@@ -10,12 +10,13 @@ import br.com.tcc.models.Investimentos;
 
 @Service
 public class InvestimentosService {
-	
-	private ArrayList<BigDecimal> rendimentoParcelas = new ArrayList<BigDecimal>();
-	private ArrayList<BigDecimal> valoresAplicados = new ArrayList<BigDecimal>();
-	private ArrayList<BigDecimal> apenasRendimento = new ArrayList<BigDecimal>();
 
 	public Investimentos calcularInvestimento(InvestimentosDTO investimentoDTO) {
+		ArrayList<BigDecimal> rendimentoParcelas = new ArrayList<BigDecimal>();
+		ArrayList<BigDecimal> valoresAplicados = new ArrayList<BigDecimal>();
+		ArrayList<BigDecimal> apenasRendimento = new ArrayList<BigDecimal>();
+		
+		
 		Investimentos investimento = new Investimentos();
 		
 		BigDecimal rendimentoMensal = investimentoDTO.getRendimentoMensal().divide(BigDecimal.valueOf(100));
@@ -27,8 +28,8 @@ public class InvestimentosService {
 			parcelaAtualParcela  = parcelaAtual.add(investimentoDTO.getValorParcela());
 			parcelaAtual = parcelaAtualParcela.multiply(rendimentoMensal).add(parcelaAtualParcela);
 		
-			this.rendimentoParcelas.add(parcelaAtual);
-			this.apenasRendimento.add(rendimentoParcelas.get(i).subtract(investimentoDTO.getValorParcela().multiply(BigDecimal.valueOf(i + 1))));
+			rendimentoParcelas.add(parcelaAtual);
+			apenasRendimento.add(rendimentoParcelas.get(i).subtract(investimentoDTO.getValorParcela().multiply(BigDecimal.valueOf(i + 1))));
 		}
 		
 		investimento.setValorParcela(investimentoDTO.getValorParcela());

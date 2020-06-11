@@ -12,16 +12,17 @@ import br.com.tcc.models.Despesas;
 
 @Service
 public class DespesasService {
-
-	private List<Integer> indicadorAdiantamento = new ArrayList<>();
-	private List<BigDecimal> evolucaoAdiantamento = new ArrayList<>();
-	private List<BigDecimal> parcelas = new ArrayList<>();
-	private List<BigDecimal> parcelasAdiantamento = new ArrayList<>();
-
+	
 	@Autowired
 	JurosService jurosService;
 
 	public Despesas calcularDespesas(DespesasDTO despesasDTO) {
+		 List<Integer> indicadorAdiantamento = new ArrayList<>();
+		 List<BigDecimal> evolucaoAdiantamento = new ArrayList<>();
+		 List<BigDecimal> parcelas = new ArrayList<>();
+		 List<BigDecimal> parcelasAdiantamento = new ArrayList<>();
+		
+		
 		Despesas despesa = new Despesas();
 		BigDecimal valorTotal = despesasDTO.getValorParcela().multiply(BigDecimal.valueOf(despesasDTO.getQntMeses()));
 
@@ -37,24 +38,24 @@ public class DespesasService {
 		despesa.setJurosPorMes(juros);
 		
 		for (int i = 0; i < despesa.getQntMeses(); i++) {
-			this.parcelas.add(despesa.getValorParcela());
-			this.parcelasAdiantamento.add(despesa.getValorParcela());
+			parcelas.add(despesa.getValorParcela());
+			parcelasAdiantamento.add(despesa.getValorParcela());
 		}
-		despesa.setParcelas(this.parcelas);
+		despesa.setParcelas(parcelas);
 
-		DespesasDTO dadosAdiantamento = this.setIndicadorAdiantamento(despesasDTO);
+		DespesasDTO dadosAdiantamento = this.setIndicadorAdiantamento(despesasDTO, parcelasAdiantamento, indicadorAdiantamento, evolucaoAdiantamento);
 		despesa.setParcelasAdiantamento(dadosAdiantamento.getParcelasAdiantamento());
 		despesa.setTotalAdiantamento(dadosAdiantamento.getTotalAdiantamento());
 
 		return despesa;
 	}
 
-	private DespesasDTO setIndicadorAdiantamento(DespesasDTO despesa) {
-		despesa.setParcelasAdiantamento(this.parcelasAdiantamento);
+	private DespesasDTO setIndicadorAdiantamento(DespesasDTO despesa, List<BigDecimal> parcelasAdiantamento, List<Integer> indicadorAdiantamento, List<BigDecimal> evolucaoAdiantamento) {
+		despesa.setParcelasAdiantamento(parcelasAdiantamento);
 		for (int i = 1; i <= despesa.getParcelasAdiantamento().size(); i++) {
 			if (i + despesa.getQntParcelasAdiantamento() <= despesa.getParcelasAdiantamento().size() + 1) {
 				if (i % despesa.getFreqMesesAdiantamento() == 0) {
-					this.indicadorAdiantamento.add(1);
+					indicadorAdiantamento.add(1);
 					for (int k = 0; k < despesa.getQntParcelasAdiantamento(); k++)
 						despesa.getParcelasAdiantamento().remove(despesa.getParcelasAdiantamento().size() - 1);
 				} else {
@@ -68,7 +69,7 @@ public class DespesasService {
 			if (indicadorAdiantamento.get(i) == 1) {
 				BigDecimal total = despesa.getValorParcela().multiply(BigDecimal.valueOf(despesa.getQntParcelasAdiantamento()));
 				totalAdiantamento = totalAdiantamento.add(total);
-				this.evolucaoAdiantamento.add(totalAdiantamento);
+				evolucaoAdiantamento.add(totalAdiantamento);
 			}
 		}
 		despesa.setTotalAdiantamento(totalAdiantamento);
