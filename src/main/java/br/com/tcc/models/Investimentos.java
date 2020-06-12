@@ -3,9 +3,26 @@ package br.com.tcc.models;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-public class Investimentos {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-	private Long id;
+@Entity
+@Table(name="investimentos")
+public class Investimentos {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_investimento")
+	private Long idInvestimento;
+	
+	@ManyToOne
+	@JoinColumn(name="id_usuario", referencedColumnName="id_usuario")
 	
 	private Usuarios usuario;
 	
@@ -19,15 +36,17 @@ public class Investimentos {
 	
 	private BigDecimal totalFinal;
 	
-	private ArrayList<BigDecimal> rendimentoParcelas = new ArrayList<BigDecimal>();
-	private ArrayList<BigDecimal> valoresAplicados = new ArrayList<BigDecimal>();
-	private ArrayList<BigDecimal> apenasRendimento = new ArrayList<BigDecimal>();
+//	private ArrayList<BigDecimal> rendimentoParcelas = new ArrayList<BigDecimal>();
 	
-	public Long getId() {
-		return this.id;
+//	private ArrayList<BigDecimal> valoresAplicados = new ArrayList<BigDecimal>();
+	
+//	private ArrayList<BigDecimal> apenasRendimento = new ArrayList<BigDecimal>();
+	
+	public Long getIdInvestimento() {
+		return this.idInvestimento;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdInvestimento(Long idInvestimento) {
+		this.idInvestimento = idInvestimento;
 	}
 	public Usuarios getUsuario() {
 		return this.usuario;
@@ -65,24 +84,24 @@ public class Investimentos {
 	public void setTotalFinal(BigDecimal totalFinal) {
 		this.totalFinal = totalFinal;
 	}
-	public ArrayList<BigDecimal> getRendimentoParcelas() {
-		return this.rendimentoParcelas;
-	}
-	public void setRendimentoParcelas(ArrayList<BigDecimal> rendimentoParcelas) {
-		this.rendimentoParcelas = rendimentoParcelas;
-	}
-	public ArrayList<BigDecimal> getValoresAplicados() {
-		return this.valoresAplicados;
-	}
-	public void setValoresAplicados(ArrayList<BigDecimal> valoresAplicados) {
-		this.valoresAplicados = valoresAplicados;
-	}
-	public ArrayList<BigDecimal> getApenasRendimento() {
-		return this.apenasRendimento;
-	}
-	public void setApenasRendimento(ArrayList<BigDecimal> apenasRendimento) {
-		this.apenasRendimento = apenasRendimento;
-	}
+//	public ArrayList<BigDecimal> getRendimentoParcelas() {
+//		return this.rendimentoParcelas;
+//	}
+//	public void setRendimentoParcelas(ArrayList<BigDecimal> rendimentoParcelas) {
+//		this.rendimentoParcelas = rendimentoParcelas;
+//	}
+//	public ArrayList<BigDecimal> getValoresAplicados() {
+//		return this.valoresAplicados;
+//	}
+//	public void setValoresAplicados(ArrayList<BigDecimal> valoresAplicados) {
+//		this.valoresAplicados = valoresAplicados;
+//	}
+//	public ArrayList<BigDecimal> getApenasRendimento() {
+//		return this.apenasRendimento;
+//	}
+//	public void setApenasRendimento(ArrayList<BigDecimal> apenasRendimento) {
+//		this.apenasRendimento = apenasRendimento;
+//	}
 
 	
 }

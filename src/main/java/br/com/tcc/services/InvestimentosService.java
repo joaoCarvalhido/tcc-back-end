@@ -37,10 +37,10 @@ public class InvestimentosService {
 		investimento.setRendimentoMensal(rendimentoMensal);
 		investimento.setTotalInvestido(this.setTotalInvestido(investimentoDTO.getQntMeses(), investimentoDTO.getValorParcela()));
 		investimento.setTotalFinal(rendimentoParcelas.get(rendimentoParcelas.size()-1));
-		investimento.setRendimentoParcelas(rendimentoParcelas);
-		investimento.setValoresAplicados(valoresAplicados);
-		investimento.setApenasRendimento(apenasRendimento);
-		
+//		investimento.setRendimentoParcelas(rendimentoParcelas);
+//		investimento.setValoresAplicados(valoresAplicados);
+//		investimento.setApenasRendimento(apenasRendimento);
+//		
 		return investimento;
 	}
 	

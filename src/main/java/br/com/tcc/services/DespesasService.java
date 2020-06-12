@@ -7,14 +7,38 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import br.com.tcc.DTO.DespesasDTO;
 import br.com.tcc.models.Despesas;
+import br.com.tcc.repositories.DespesasRepository;
 
 @Service
 public class DespesasService {
 	
 	@Autowired
 	JurosService jurosService;
+	
+	@Autowired
+	DespesasRepository despesasRepository;
+	
+	public DespesasDTO getDespesasDTO(Long cdDespesas) {
+		Optional<Despesas> despesas = this.despesasRepository.findById(cdDespesas);
+		if (despesas.isPresent()) {
+			DespesasDTO despesaDTO = new DespesasDTO();
+			despesaDTO.setValorOriginal(despesas.get().getValorOriginal());
+			despesaDTO.setValorParcela(despesas.get().getValorParcela());
+			despesaDTO.setValorTotal(despesas.get().getValorTotal());
+			despesaDTO.setAdiantamento(despesas.get().getAdiantamento());
+			despesaDTO.setFreqMesesAdiantamento(despesas.get().getFreqMesesAdiantamento());
+			despesaDTO.setJurosPorMes(despesas.get().getJurosPorMes());
+			despesaDTO.setQntMeses(despesas.get().getQntMeses());
+			despesaDTO.setQntParcelasAdiantamento(despesas.get().getQntParcelasAdiantamento());
+			
+			return despesaDTO;
+		}
+		return null;
+	}
 
 	public Despesas calcularDespesas(DespesasDTO despesasDTO) {
 		 List<Integer> indicadorAdiantamento = new ArrayList<>();
@@ -30,6 +54,7 @@ public class DespesasService {
 		despesa.setValorParcela(despesasDTO.getValorParcela());
 		despesa.setQntMeses(despesasDTO.getQntMeses());
 		despesa.setValorTotal(valorTotal);
+		despesa.setAdiantamento(despesasDTO.getAdiantamento());
 		despesa.setFreqMesesAdiantamento(despesasDTO.getFreqMesesAdiantamento());
 		despesa.setQntParcelasAdiantamento(despesasDTO.getQntParcelasAdiantamento());
 
@@ -41,13 +66,14 @@ public class DespesasService {
 			parcelas.add(despesa.getValorParcela());
 			parcelasAdiantamento.add(despesa.getValorParcela());
 		}
-		despesa.setParcelas(parcelas);
+		//despesa.setParcelas(parcelas);
+		
+		this.setIndicadorAdiantamento(despesasDTO, parcelasAdiantamento, indicadorAdiantamento, evolucaoAdiantamento);
+		//DespesasDTO dadosAdiantamento = this.setIndicadorAdiantamento(despesasDTO, parcelasAdiantamento, indicadorAdiantamento, evolucaoAdiantamento);
+		//despesa.setParcelasAdiantamento(dadosAdiantamento.getParcelasAdiantamento());
+		//despesa.setTotalAdiantamento(dadosAdiantamento.getTotalAdiantamento());
 
-		DespesasDTO dadosAdiantamento = this.setIndicadorAdiantamento(despesasDTO, parcelasAdiantamento, indicadorAdiantamento, evolucaoAdiantamento);
-		despesa.setParcelasAdiantamento(dadosAdiantamento.getParcelasAdiantamento());
-		despesa.setTotalAdiantamento(dadosAdiantamento.getTotalAdiantamento());
-
-		return despesa;
+		return this.despesasRepository.save(despesa);
 	}
 
 	private DespesasDTO setIndicadorAdiantamento(DespesasDTO despesa, List<BigDecimal> parcelasAdiantamento, List<Integer> indicadorAdiantamento, List<BigDecimal> evolucaoAdiantamento) {

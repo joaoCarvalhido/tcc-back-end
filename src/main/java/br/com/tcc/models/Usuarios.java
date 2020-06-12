@@ -1,25 +1,29 @@
 package br.com.tcc.models;
 
-//@Table(name = "usuarios")
-//@Entity
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Table
+@Entity
 public class Usuarios {
 	
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-//	@Column(name = "nome")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_usuario")
+	private Long idUsuario;
 	private String nome;
-	
-//	@Column(name = "string")
 	private String email;
 
-	public Long getId() {
-		return id;
+	public Long getIdUsuario() {
+		return idUsuario;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setId(Long idUsuario) {
+		this.idUsuario = idUsuario;
 	}
 
 	public String getNome() {
