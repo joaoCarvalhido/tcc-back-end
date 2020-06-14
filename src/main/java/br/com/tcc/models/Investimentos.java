@@ -1,7 +1,6 @@
 package br.com.tcc.models;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="investimentos")
+@Table()
 public class Investimentos {
 	
 	@Id

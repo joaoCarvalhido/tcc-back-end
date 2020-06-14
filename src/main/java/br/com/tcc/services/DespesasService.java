@@ -68,11 +68,10 @@ public class DespesasService {
 		}
 		//despesa.setParcelas(parcelas);
 		
-		this.setIndicadorAdiantamento(despesasDTO, parcelasAdiantamento, indicadorAdiantamento, evolucaoAdiantamento);
-		//DespesasDTO dadosAdiantamento = this.setIndicadorAdiantamento(despesasDTO, parcelasAdiantamento, indicadorAdiantamento, evolucaoAdiantamento);
-		//despesa.setParcelasAdiantamento(dadosAdiantamento.getParcelasAdiantamento());
-		//despesa.setTotalAdiantamento(dadosAdiantamento.getTotalAdiantamento());
-
+		DespesasDTO dadosAdiantamento = this.setIndicadorAdiantamento(despesasDTO, parcelasAdiantamento, indicadorAdiantamento, evolucaoAdiantamento);
+		
+		despesa.setParcelasFinaisComAdiantamento(dadosAdiantamento.getParcelasFinaisComAdiantamento());
+		despesa.setApenasAdiantamento(dadosAdiantamento.getApenasAdiantamento());
 		return this.despesasRepository.save(despesa);
 	}
 
@@ -99,6 +98,7 @@ public class DespesasService {
 			}
 		}
 		despesa.setTotalAdiantamento(totalAdiantamento);
+		despesa.setQntParcelasAdiantamento(despesa.getParcelasAdiantamento().size());
 		return despesa;
 	}
 
