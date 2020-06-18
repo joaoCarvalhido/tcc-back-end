@@ -3,9 +3,12 @@ package br.com.tcc.DTO;
 import java.math.BigDecimal;
 import java.util.List;
 
+import br.com.tcc.models.Usuarios;
+
 public class DespesasDTO {
 	
 	private Long idDespesas;
+	private Usuarios usuario;
 	private BigDecimal valorOriginal;
 	private BigDecimal valorParcela;
 	private Integer qntMeses;
@@ -27,6 +30,12 @@ public class DespesasDTO {
 	}
 	public void setIdDespesas(Long idDespesas) {
 		this.idDespesas = idDespesas;
+	}
+	public Usuarios getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuarios usuario) {
+		this.usuario = usuario;
 	}
 	public BigDecimal getValorOriginal() {
 		return valorOriginal;

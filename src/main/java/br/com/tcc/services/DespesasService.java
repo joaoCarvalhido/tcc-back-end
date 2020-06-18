@@ -26,6 +26,7 @@ public class DespesasService {
 		Optional<Despesas> despesas = this.despesasRepository.findById(cdDespesas);
 		if (despesas.isPresent()) {
 			DespesasDTO despesaDTO = new DespesasDTO();
+			despesaDTO.setIdDespesas(despesas.get().getIdDespesa());
 			despesaDTO.setValorOriginal(despesas.get().getValorOriginal());
 			despesaDTO.setValorParcela(despesas.get().getValorParcela());
 			despesaDTO.setValorTotal(despesas.get().getValorTotal());
@@ -54,9 +55,10 @@ public class DespesasService {
 		despesa.setValorParcela(despesasDTO.getValorParcela());
 		despesa.setQntMeses(despesasDTO.getQntMeses());
 		despesa.setValorTotal(valorTotal);
-		despesa.setAdiantamento(despesasDTO.getAdiantamento());
+		
 		despesa.setFreqMesesAdiantamento(despesasDTO.getFreqMesesAdiantamento());
 		despesa.setQntParcelasAdiantamento(despesasDTO.getQntParcelasAdiantamento());
+		despesa.setUsuario(despesasDTO.getUsuario());
 
 		BigDecimal juros = this.jurosService.descobreJuros(despesa.getValorTotal(), despesa.getValorOriginal(),
 				despesa.getQntMeses());
@@ -67,11 +69,14 @@ public class DespesasService {
 			parcelasAdiantamento.add(despesa.getValorParcela());
 		}
 		//despesa.setParcelas(parcelas);
-		
-		DespesasDTO dadosAdiantamento = this.setIndicadorAdiantamento(despesasDTO, parcelasAdiantamento, indicadorAdiantamento, evolucaoAdiantamento);
-		
-		despesa.setParcelasFinaisComAdiantamento(dadosAdiantamento.getParcelasFinaisComAdiantamento());
-		despesa.setApenasAdiantamento(dadosAdiantamento.getApenasAdiantamento());
+		if (despesasDTO.getAdiantamento() != null) {
+			despesa.setAdiantamento(despesasDTO.getAdiantamento());
+			
+			DespesasDTO dadosAdiantamento = this.setIndicadorAdiantamento(despesasDTO, parcelasAdiantamento, indicadorAdiantamento, evolucaoAdiantamento);
+			
+			despesa.setParcelasFinaisComAdiantamento(dadosAdiantamento.getParcelasFinaisComAdiantamento());
+			despesa.setApenasAdiantamento(dadosAdiantamento.getApenasAdiantamento());
+		}
 		return this.despesasRepository.save(despesa);
 	}
 

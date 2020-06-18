@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class DespesasResource {
 	JurosService jurosService;
 	
 	@GetMapping("/{cdDespesas}")
-	public ResponseEntity<?> getInvestimento(@PathVariable Long cdDespesas) {
+	public ResponseEntity<?> getDespesa(@PathVariable Long cdDespesas) {
 		DespesasDTO despesaDTO = this.despesasService.getDespesasDTO(cdDespesas);
 		if (despesaDTO != null)
 			return ResponseEntity.ok(despesaDTO);
@@ -32,10 +33,10 @@ public class DespesasResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> calcular(DespesasDTO despesasDTO) {
+	public ResponseEntity<?> calcular(@RequestBody DespesasDTO despesasDTO) {
 		Despesas despesa = this.despesasService.calcularDespesas(despesasDTO);
 		if(despesa != null)
-			return ResponseEntity.ok().build();
+			return ResponseEntity.ok(despesa);
 		return ResponseEntity.badRequest().build();
 	}
 	
