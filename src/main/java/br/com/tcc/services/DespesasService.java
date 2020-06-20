@@ -77,7 +77,7 @@ public class DespesasService {
 			parcelasAdiantamento.add(despesa.getValorParcela());
 		}
 		//despesa.setParcelas(parcelas);
-		if (despesasDTO.getAdiantamento() != null) {
+		if (despesasDTO.getAdiantamento() != null && despesasDTO.getAdiantamento() == true) {
 			despesa.setAdiantamento(despesasDTO.getAdiantamento());
 			
 			DespesasDTO dadosAdiantamento = this.setIndicadorAdiantamento(despesasDTO, parcelasAdiantamento, indicadorAdiantamento, evolucaoAdiantamento);
