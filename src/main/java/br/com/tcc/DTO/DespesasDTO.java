@@ -22,6 +22,8 @@ public class DespesasDTO {
 	private BigDecimal totalAdiantamento;
 	private Integer parcelasFinaisComAdiantamento;
 	private BigDecimal apenasAdiantamento;
+	private Long cdTipoDespesa;
+	private String dsTipoDespesa;
 	
 	
 	
@@ -114,6 +116,18 @@ public class DespesasDTO {
 	}
 	public void setApenasAdiantamento(BigDecimal apenasAdiantamento) {
 		this.apenasAdiantamento = apenasAdiantamento;
+	}
+	public Long getCdTipoDespesa() {
+		return cdTipoDespesa;
+	}
+	public void setCdTipoDespesa(Long cdTipoDespesa) {
+		this.cdTipoDespesa = cdTipoDespesa;
+	}
+	public String getDsTipoDespesa() {
+		return dsTipoDespesa;
+	}
+	public void setDsTipoDespesa(String dsTipoDespesa) {
+		this.dsTipoDespesa = dsTipoDespesa;
 	}
 	
 	

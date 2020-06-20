@@ -11,7 +11,9 @@ import java.util.Optional;
 
 import br.com.tcc.DTO.DespesasDTO;
 import br.com.tcc.models.Despesas;
+import br.com.tcc.models.TipoDespesas;
 import br.com.tcc.repositories.DespesasRepository;
+import br.com.tcc.repositories.TipoDespesasRepository;
 
 @Service
 public class DespesasService {
@@ -21,6 +23,9 @@ public class DespesasService {
 	
 	@Autowired
 	DespesasRepository despesasRepository;
+	
+	@Autowired 
+	TipoDespesasRepository tipoDespesasRepository;
 	
 	public DespesasDTO getDespesasDTO(Long cdDespesas) {
 		Optional<Despesas> despesas = this.despesasRepository.findById(cdDespesas);
@@ -46,6 +51,7 @@ public class DespesasService {
 		 List<BigDecimal> evolucaoAdiantamento = new ArrayList<>();
 		 List<BigDecimal> parcelas = new ArrayList<>();
 		 List<BigDecimal> parcelasAdiantamento = new ArrayList<>();
+		 Optional<TipoDespesas> tipoDespesas = tipoDespesasRepository.findById(despesasDTO.getCdTipoDespesa());
 		
 		
 		Despesas despesa = new Despesas();
@@ -59,6 +65,8 @@ public class DespesasService {
 		despesa.setFreqMesesAdiantamento(despesasDTO.getFreqMesesAdiantamento());
 		despesa.setQntParcelasAdiantamento(despesasDTO.getQntParcelasAdiantamento());
 		despesa.setUsuario(despesasDTO.getUsuario());
+		despesa.setTipoDespesa(tipoDespesas.get());
+		despesa.setParcelasFinaisComAdiantamento(despesasDTO.getQntMeses());
 
 		BigDecimal juros = this.jurosService.descobreJuros(despesa.getValorTotal(), despesa.getValorOriginal(),
 				despesa.getQntMeses());
@@ -95,16 +103,23 @@ public class DespesasService {
 		}
 
 		BigDecimal totalAdiantamento = BigDecimal.ZERO;
+		BigDecimal total = BigDecimal.ZERO;
+		//Integer totalMesAdiantamento = 0;
 		for (int i = 0; i < indicadorAdiantamento.size(); i++) {
 			if (indicadorAdiantamento.get(i) == 1) {
-				BigDecimal total = despesa.getValorParcela().multiply(BigDecimal.valueOf(despesa.getQntParcelasAdiantamento()));
+				 total = despesa.getValorParcela().multiply(BigDecimal.valueOf(despesa.getQntParcelasAdiantamento()));
 				totalAdiantamento = totalAdiantamento.add(total);
 				evolucaoAdiantamento.add(totalAdiantamento);
+				//totalMesAdiantamento += 1;
 			}
 		}
-		despesa.setTotalAdiantamento(totalAdiantamento);
-		despesa.setQntParcelasAdiantamento(despesa.getParcelasAdiantamento().size());
-		return despesa;
+		
+		DespesasDTO dto = new DespesasDTO();
+		
+		dto.setApenasAdiantamento(totalAdiantamento);
+		dto.setTotalAdiantamento(totalAdiantamento);
+		dto.setParcelasFinaisComAdiantamento(indicadorAdiantamento.size());
+		return dto;
 	}
 
 }

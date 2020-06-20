@@ -22,7 +22,6 @@ public class Investimentos {
 	
 	@ManyToOne
 	@JoinColumn(name="id_usuario", referencedColumnName="id_usuario")
-	
 	private Usuarios usuario;
 	
 	private BigDecimal valorParcela;

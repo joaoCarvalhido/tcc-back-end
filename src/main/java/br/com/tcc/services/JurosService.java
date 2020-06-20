@@ -1,6 +1,7 @@
 package br.com.tcc.services;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +11,12 @@ import org.springframework.stereotype.Service;
 public class JurosService {
 
 	public BigDecimal descobreJuros(BigDecimal totalDivida, BigDecimal valorOriginal, int meses) {
-		return ((totalDivida.subtract(valorOriginal)).divide(BigDecimal.valueOf(meses)).divide(valorOriginal));
+		double dTotalDivida = totalDivida.doubleValue();
+		double dValorOriginal = valorOriginal.doubleValue();
+		double dresultado =  (dTotalDivida - dValorOriginal) / meses / dValorOriginal;
+		return BigDecimal.valueOf(dresultado);
+		//return ((totalDivida.subtract(valorOriginal)).divide(BigDecimal.valueOf(meses), MathContext.DECIMAL128).divide(valorOriginal,  MathContext.DECIMAL128));
 	}
-	
 	
 	public BigDecimal descobreTaxaAdministracaoConsorcio(BigDecimal juros, int meses) {
 		return BigDecimal.valueOf(meses).divide(juros);
